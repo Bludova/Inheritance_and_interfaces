@@ -28,36 +28,40 @@ abstract class Product
 
 }
 
-// interface BeginMove
-// {
-//   public function move() ;
-// }
+interface PriceDiscount
+{
+    function getDiscount();
 
+}
 
-// trait CurrentSpeed
-// {
-//     private $currentSpeed;
-
-//     public function getCurrentSpeed()
-//     {
-//         return $this->currentSpeed;
-//     }
-
-//     public function setCurrentSpeed($pages)
-//     {
-//         $this->currentSpeed = $currentSpeed;
-
-//         return $this;
-//     }
-
-// }
-
-class Car extends Product  //implements BeginMove
+class Car extends Product implements PriceDiscount 
 {
     // use CurrentSpeed;
     private $color;
     private $year;
     private $currentSpeed;
+    private $discounts;
+    
+    public function getDiscount()
+    {
+       $discountPrice = round($this->getPrice() * $this->getDiscounts() / 100);
+       return round($this->getPrice() - $discountPrice);
+     }
+
+         public function getDiscounts()
+    {
+        return $this->discounts;
+    }
+
+    public function setDiscounts($discounts)
+    {
+        $this->discounts = $discounts;
+
+        return $this->discounts;
+    }
+
+
+
     public function getColor()
     {
         return $this->color;
@@ -69,6 +73,8 @@ class Car extends Product  //implements BeginMove
 
         return $this;
     }
+
+
 
     public function getYear()
     {
@@ -251,42 +257,44 @@ class Goods extends Product
 }
 
 
-$bmwX5 = new Car('BMW X5', '2 799 000 руб');
+$bmwX5 = new Car('BMW X5', '2799000 руб');
 $bmwX5
     ->setCurrentSpeed('0')
     ->setColor('Черная')
-    ->setYear('2015');
-    
-$audiTt = new Car('Audi TT', '2 408 000 руб');
+    ->setYear('2015')
+    ->setDiscounts('20');
+
+$audiTt = new Car('Audi TT', '2408000 руб');
 $audiTt
     ->setCurrentSpeed('0')
     ->setColor('Белая')
-    ->setYear('2012');
+    ->setYear('2012')
+    ->setDiscounts('12');
 
 $samsung = new Televisions('Samsung', '25000 руб');
 $samsung
-->setColor('Черный')
-->setYear('2017');
+    ->setColor('Черный')
+    ->setYear('2017');
 
 $pilot = new Pens('Pilot', '50 руб');
 $pilot
-->setColor('Синий')
-->setYear('2017');
+    ->setColor('Синий')
+    ->setYear('2017');
 
 $duck = new Birds('Bashkir Colored', '250 руб');
 $duck
-->setColor('Colored')
-->setYear('1');
+    ->setColor('Colored')
+    ->setYear('1');
 
 $tea = new Goods('Greenfield', '120 руб');
 $tea
-->setColor('Зеленый')
-->setYear('1 год');
+    ->setColor('Зеленый')
+    ->setYear('1 год');
 
 $milk = new Goods('Буренка', '80 руб');
 $milk
-->setColor('Белый')
-->setYear('7 дней');
+    ->setColor('Белый')
+    ->setYear('7 дней');
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -297,20 +305,24 @@ $milk
 <body>
 <h1>Наследование и интерфейсы</h1>
 <p><i>Полиморфизм</i> - это способность классов предоставлять единый программный интерфейс при различной реализации.</p>
-<p>При помощи механизма наследования мы можем создать новые типы данных не "с нуля", 
+<p>При помощи механизма наследования мы можем создать новые типы данных не "с нуля",
 а взяв за основу некоторый уже существующий класс, который в этом случии будет называться суперклассом.</p>
-<p> Интерфейс описывает свойства. Абстрактный класс же описывает сущность. 
-Интерфейсы надо использовать, когда классы, которые должны предоставлять 
+<p> Интерфейс описывает свойства. Абстрактный класс же описывает сущность.
+Интерфейсы надо использовать, когда классы, которые должны предоставлять
 один и тот же интерфейс, не должны быть (или не могут быть) связаны иерархически.
 Кроме того, если нужно предоставить несколько интерфейсов</p>
 <?php
 echo 'Наш автомобиль:'. $bmwX5->getTitle().'<br />';
+echo 'Скидка на товар - '.$bmwX5->getDiscounts().'%<br />';
+echo "Цена со скидкой " . $bmwX5->getDiscount().'<br />';
 echo $bmwX5->getFullDescription() . '<br />';
 echo 'Цвет: '. $bmwX5->getColor().'<br />';
 echo 'Текущая скорость: '. $bmwX5->getCurrentSpeed().'<br />';
 echo '<hr>';
 
 echo 'Наш автомобиль:'. $audiTt->getTitle().'<br />';
+echo 'Скидка на товар - '.$audiTt->getDiscounts().'%<br />';
+echo "Цена со скидкой " . $audiTt->getDiscount().'<br />';
 echo $audiTt->getFullDescription() . '<br />';
 echo 'Цвет: '. $audiTt->getColor().'<br />';
 echo 'Текущая скорость: '. $audiTt->getCurrentSpeed().'<br />';
